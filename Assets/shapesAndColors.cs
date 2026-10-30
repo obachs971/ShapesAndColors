@@ -38,6 +38,7 @@ public class shapesAndColors : MonoBehaviour {
 	private int shapeCursor = -1;
 	private bool notStart = false;
 	private bool TPautosolve = false;
+	private bool moduleSolved = false;
 	void Awake()
 	{
 		moduleId = moduleIdCounter++;
@@ -317,6 +318,7 @@ public class shapesAndColors : MonoBehaviour {
 				foreach (MeshRenderer space in gridMeshRender)
 					space.transform.localScale = new Vector3(0f, 0f, 0f);
 				module.HandlePass();
+				moduleSolved = true;
 				audio.PlaySoundAtTransform(ClueUp.name, transform);
 				audio.PlaySoundAtTransform(ClueDown.name, transform);
 				yield return new WaitForSeconds(0.25f);
@@ -518,6 +520,8 @@ public class shapesAndColors : MonoBehaviour {
 			else if (Regex.IsMatch(param[0], @"^\s*SUBMIT\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && param.Length == 1)
 			{
 				yield return null;
+				yield return "strike";
+				yield return "solve";
 				submit.OnInteract();
 			}
 			else if (Regex.IsMatch(param[0], @"^\s*CLEAR\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && param.Length == 1)
@@ -620,6 +624,7 @@ public class shapesAndColors : MonoBehaviour {
 			}
 		}
 		submit.OnInteract();
-		yield return new WaitForSeconds(0.1f);
+		while (!moduleSolved)
+			yield return true;
 	}
 }
