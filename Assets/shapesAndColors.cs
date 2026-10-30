@@ -77,7 +77,10 @@ public class shapesAndColors : MonoBehaviour {
 				Debug.LogFormat("[Shapes and Colors #{0}] {1}", moduleId, output);
 			}
 		}
-		clues = new List<Material[]>();
+        Debug.LogFormat("[Shapes and Colors #{0}] Solution:", moduleId);
+        for (int row = 0; row < 3; row++)
+            Debug.LogFormat("[Shapes and Colors #{0}] {1} {2} {3}", moduleId, solution[row][0], solution[row][1], solution[row][2]);
+        clues = new List<Material[]>();
 		foreach (string[][] clue in textClues)
 		{
 			clues.Add(new Material[9]);
@@ -210,17 +213,19 @@ public class shapesAndColors : MonoBehaviour {
 		colorCursor = -1;
 		shapeCursor = -1;
 		List<int> notFilled = new List<int>();
-		for(int i = 0; i < submission.Length; i++)
-		{
-			string submitLog = "";
-			for (int j = 0; j < submission[i].Length; j++)
-			{
-				if (submission[i][j].Contains("W"))
-					notFilled.Add(i * 3 + j);
-				submitLog = submitLog + "" + submission[i][j] + " ";
-			}
-		}
-		if(notFilled.Count == 0)
+        Debug.LogFormat("[Shapes and Colors #{0}] User Submission:", moduleId);
+        for (int i = 0; i < submission.Length; i++)
+        {
+            string submitLog = "";
+            for (int j = 0; j < submission[i].Length; j++)
+            {
+                if (submission[i][j].Contains("W"))
+                    notFilled.Add(i * 3 + j);
+                submitLog = submitLog + "" + submission[i][j] + " ";
+            }
+            Debug.LogFormat("[Shapes and Colors #{0}] {1}", moduleId, submitLog);
+        }
+        if (notFilled.Count == 0)
 		{
 			//Next, check if all the clues can fit on the grid at least once.
 			bool flag = true;
